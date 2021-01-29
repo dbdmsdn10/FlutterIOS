@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
+
 
 import 'dart:async';
 
@@ -11,6 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_ble_lib/flutter_ble_lib.dart';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -66,7 +68,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   FlatButton(
                     child: Text('QRcode', style: TextStyle(fontSize: 24)),
-                    onPressed: _qrScan,
+                    onPressed: (){
+                      final result = Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QRWidget()),
+                      ).then((value) => setState(() {
+                        Barcode a = value;
+                        qrcode = a.code;
+                      }));
+
+
+                    },
                     color: Colors.green,
                     textColor: Colors.white,
                   ),
@@ -88,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   FlatButton(
                     child: Text('알람', style: TextStyle(fontSize: 24)),
-                    onPressed: _qrScan,
+                    // onPressed: (),
                     color: Colors.green,
                     textColor: Colors.white,
                   ),
@@ -204,18 +217,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future _qrScan() async {
-    await Permission.camera.request();
-    String barcode = await scanner.scan();
-    setState(() {
-      if (barcode == null) {
-        print('nothing return.');
-      } else {
-        qrcode = barcode;
-      }
-    });
-  }
-
   Future _datePicker() async {
     final DateTime picked = await showDatePicker(
       context: context,
@@ -266,6 +267,65 @@ class _MyHomePageState extends State<MyHomePage> {
 State<StatefulWidget> createState() {
   // TODO: implement createState
   throw UnimplementedError();
+}
+
+
+//QR코드 화면 위잿화
+class QRWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _QRHompage();
+}
+class _QRHompage extends State<QRWidget>{
+  Barcode result;
+  QRViewController controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Expanded(flex: 4, child: _buildQrView(context)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQrView(BuildContext context) {
+
+    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+        MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
+    // To ensure the Scanner view is properly sizes after rotation
+    // we need to listen for Flutter SizeChanged notification and update controller
+    return QRView(
+      key: qrKey,
+      cameraFacing: CameraFacing.front,
+      onQRViewCreated: _onQRViewCreated,
+      formatsAllowed: [BarcodeFormat.qrcode],
+      overlay: QrScannerOverlayShape(
+        borderColor: Colors.red,
+        borderRadius: 10,
+        borderLength: 30,
+        borderWidth: 10,
+        cutOutSize: scanArea,
+      ),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+        controller?.pauseCamera();
+        Navigator.pop(context, result);
+      });
+    });
+  }
 }
 
 //블루투스 화면 위잿화

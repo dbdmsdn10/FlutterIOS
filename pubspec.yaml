@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  qrscan: ^0.2.21
+  qr_code_scanner: ^0.3.0
   permission_handler: ^5.0.1+1
   flutter_ble_lib: ^2.3.1
   flutter:
