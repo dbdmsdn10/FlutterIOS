@@ -4,6 +4,12 @@
 <dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Your own description of the purpose.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to scan QR codes</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>blue permission</string>
 	<key>CFBundleDevelopmentRegion</key>

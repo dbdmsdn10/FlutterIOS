@@ -273,12 +273,28 @@ State<StatefulWidget> createState() {
 //QR코드 화면 위잿화
 class QRWidget extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _QRHompage();
+  _QRHompage createState() => _QRHompage();
 }
 class _QRHompage extends State<QRWidget>{
   Barcode result;
   QRViewController controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _checkPermissions;
+    super.initState();
+
+  }
+  _checkPermissions() async{
+    if (await Permission.camera.isGranted) {}
+    else {
+      Map<Permission, PermissionStatus> statuses =
+      await [Permission.camera].request();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -364,10 +380,18 @@ class _bluetoothHompage extends State<bluetoothWidget> {
   //퍼미션 체크 및 없으면 퍼미션 동의 화면 출력
   _checkPermissions() async {
     if (Platform.isAndroid) {
-      if (await Permission.contacts.request().isGranted) {}
-      Map<Permission, PermissionStatus> statuses =
-      await [Permission.location].request();
-      print(statuses[Permission.location]);
+      if (await Permission.location.isGranted) {}
+      else {
+        Map<Permission, PermissionStatus> statuses =
+        await [Permission.location].request();
+      }
+    }
+    else if (Platform.isIOS) {
+      if (await Permission.location.isGranted) {}
+      else {
+        Map<Permission, PermissionStatus> statuses =
+        await [Permission.location].request();
+      }
     }
   }
 

@@ -3,17 +3,23 @@ PODS:
   - flutter_ble_lib (2.3.1):
     - Flutter
     - MultiplatformBleAdapter (~> 0.1.7)
+  - MTBBarcodeScanner (5.0.11)
   - MultiplatformBleAdapter (0.1.7)
   - "permission_handler (5.0.1+1)":
     - Flutter
+  - qr_code_scanner (0.2.0):
+    - Flutter
+    - MTBBarcodeScanner
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_ble_lib (from `.symlinks/plugins/flutter_ble_lib/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
 
 SPEC REPOS:
   trunk:
+    - MTBBarcodeScanner
     - MultiplatformBleAdapter
 
 EXTERNAL SOURCES:
@@ -23,12 +29,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_ble_lib/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  qr_code_scanner:
+    :path: ".symlinks/plugins/qr_code_scanner/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_ble_lib: 12143505774d055781b836052cf0b2c2a2257b0b
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   MultiplatformBleAdapter: 975cfb2a333b2c42b7a11628bd100ccb61872da2
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
+  qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
